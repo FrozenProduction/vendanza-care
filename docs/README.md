@@ -1,15 +1,17 @@
-# docs — the documents we write
+# docs — os documentos que escrevemos
 
-**Belongs here:** the project's own documents — the system proposal (PA02), requirements gathered with ULSBE,
-meeting notes, the interim/final report, the poster, the pitch material.
+**Fica aqui** o trabalho do grupo: a proposta de sistema, os requisitos recolhidos com a ULSBE, notas de
+reuniões, o relatório intercalar e final, o cartaz e o material do pitch.
 
-**Does not belong here:**
+**Não fica aqui:**
 
-- teacher / course PDFs (Moodle originals) — third-party material, kept outside the repository
-- the WHO Global Patient Safety Action Plan and the HLS-EU-PT article — not ours to redistribute
-- personal and team admin (student numbers, teacher contacts, team-name research) — kept outside
+- os PDFs das aulas, que são material de terceiros e ficam fora do repositório;
+- o Plano de Ação Global da OMS e o artigo do HLS-EU-PT, que não são nossos para redistribuir;
+- dados pessoais e de gestão da equipa (números de aluno, contactos do docente).
 
-**Files:**
+**Ficheiros:**
 
-- `00-RESUMO-PA.md` — working summary of the PA brief: UC rules and grading, the PA02 proposal requirements,
-  the figures from the two required readings, and the MyHSMM prior-art note (the hospital's own app).
+- `00-RESUMO-PA.md` — resumo de trabalho do enunciado: regras e avaliação da UC, o que a proposta do PA02
+  pede, os números dos dois textos de leitura obrigatória e a nota sobre o MyHSMM, a app que a ULS já tem.
+- `PA03-funcionalidades-e-conflitos.md` — o que entra na app, o que fica de fora e porquê, lido contra o
+  enunciado do PA03, mais a componente de IA e as perguntas para a ULSBE.

@@ -1,0 +1,368 @@
+{
+  "versao": 1,
+  "nota": "Conteudo educativo escrito pela equipa a partir das indicacoes da ULSBE (26/10/2026). Em revisao pela ULSBE. Uma ideia por frase; nada de termos tecnicos sem explicacao.",
+  "modulos": [
+    {
+      "id": "identificacao",
+      "titulo": "Saber quem é",
+      "resumo": "A pulseira protege-o. Confirme sempre o seu nome.",
+      "icone": "pessoa",
+      "seccoes": [
+        {
+          "titulo": "Porque usa uma pulseira",
+          "texto": "A pulseira tem o seu nome e um número. É assim que a equipa sabe que está a tratar a pessoa certa. Não a tire, nem para dormir nem para tomar banho."
+        },
+        {
+          "titulo": "Confirme o seu nome",
+          "texto": "Antes de um exame, de uma análise, de uma cirurgia ou de um medicamento, a equipa deve perguntar o seu nome completo e a data de nascimento. Se não perguntarem, diga-os você."
+        },
+        {
+          "titulo": "Se os dados estiverem errados",
+          "texto": "Se vir o nome errado na pulseira ou num papel, diga logo. Um erro no nome pode levar ao tratamento errado.",
+          "destaque": true
+        },
+        {
+          "titulo": "Uma pergunta que ajuda",
+          "texto": "Pode perguntar sempre: «Pode confirmar o meu nome e a data de nascimento?». Não é desconfiança. É segurança."
+        }
+      ]
+    },
+    {
+      "id": "comunicacao",
+      "titulo": "Falar com quem trata",
+      "resumo": "Dizer que não percebeu é seguro e ajuda.",
+      "icone": "falar",
+      "accao": "perguntas",
+      "seccoes": [
+        {
+          "titulo": "Não percebeu? Diga.",
+          "texto": "«Não percebi. Pode explicar outra vez, mais devagar?» é uma frase que pode dizer sempre. Ninguém fica aborrecido."
+        },
+        {
+          "titulo": "Repita por palavras suas",
+          "texto": "No fim da explicação, diga o que entendeu. Se não for o que o profissional quis dizer, ele corrige antes de sair do consultório."
+        },
+        {
+          "titulo": "Diga o que mudou",
+          "texto": "Alergias novas, medicamentos novos, gravidez, operações recentes. Diga mesmo que ninguém pergunte."
+        },
+        {
+          "titulo": "Antes de ir para casa",
+          "texto": "Peça as instruções escritas e o contacto de quem deve ligar.",
+          "pontos": [
+            "O que tomo e a que horas",
+            "O que devo vigiar em casa",
+            "Quem ligo se piorar"
+          ]
+        },
+        {
+          "titulo": "Leve perguntas escritas",
+          "texto": "Uma lista de perguntas evita esquecer o mais importante. Nesta aplicação há uma lista pronta a escolher, com um botão no fim deste tema."
+        }
+      ]
+    },
+    {
+      "id": "participacao",
+      "titulo": "Os seus direitos",
+      "resumo": "O doente também protege a sua segurança.",
+      "icone": "direitos",
+      "seccoes": [
+        {
+          "titulo": "Tem direito a",
+          "texto": "Estes direitos valem em qualquer unidade de saúde.",
+          "pontos": [
+            "Ser informado de forma que entenda",
+            "Fazer perguntas e receber resposta",
+            "Ter um acompanhante, quando é possível",
+            "Recusar um tratamento e saber o que isso implica"
+          ]
+        },
+        {
+          "titulo": "O seu papel na segurança",
+          "texto": "Confirme o nome, pergunte para que serve cada medicamento e diga quando algo não lhe parece bem. São três gestos simples que travam muitos erros."
+        },
+        {
+          "titulo": "Antes de assinar o consentimento",
+          "texto": "Pergunte o que vai ser feito, para quê, quais são os riscos, se há outra forma e o que acontece se disser não. Só assine quando entender."
+        },
+        {
+          "titulo": "Sinalizar uma preocupação",
+          "texto": "Pode falar com a pessoa que o está a tratar, com o responsável do serviço ou com o Gabinete do Cidadão da sua unidade."
+        }
+      ]
+    },
+    {
+      "id": "infecoes",
+      "titulo": "Evitar infeções",
+      "resumo": "As mãos limpam-se muitas vezes.",
+      "icone": "maos",
+      "seccoes": [
+        {
+          "titulo": "Quando lavar as mãos",
+          "texto": "A higiene das mãos é a forma mais simples de evitar infeções.",
+          "pontos": [
+            "Antes de comer",
+            "Depois da casa de banho",
+            "Antes e depois de tocar numa ferida ou num cateter",
+            "Quando entra e quando sai do hospital"
+          ]
+        },
+        {
+          "titulo": "Como lavar bem",
+          "texto": "Água e sabão, durante 40 a 60 segundos. Esfregue as palmas, o intervalo dos dedos, os polegares, as unhas e os pulsos. Seque com uma toalha de papel."
+        },
+        {
+          "titulo": "Feridas e cateteres",
+          "texto": "Mantenha o penso seco e colado. Não puxe nem toque no local onde entra o cateter. Se o penso estiver solto, sujo ou molhado, peça para trocar."
+        },
+        {
+          "titulo": "Sinais de infeção",
+          "texto": "Febre, vermelhidão, calor, dor, pus ou mau cheiro no local. Diga à equipa assim que notar.",
+          "destaque": true
+        }
+      ]
+    },
+    {
+      "id": "cirurgia",
+      "titulo": "Vou ser operado",
+      "resumo": "Antes e depois da cirurgia, sem surpresas.",
+      "icone": "cirurgia",
+      "seccoes": [
+        {
+          "titulo": "Antes da cirurgia",
+          "texto": "Siga as instruções de jejum e de medicação à letra. Pergunte quais os medicamentos que deve parar: alguns, como os anticoagulantes, têm de ser suspensos antes."
+        },
+        {
+          "titulo": "No dia",
+          "texto": "Prepare tudo na noite anterior.",
+          "pontos": [
+            "Tome banho antes de sair de casa",
+            "Não use cremes, maquilhagem nem verniz nas unhas",
+            "Retire anéis, brincos e próteses dentárias",
+            "Leve a lista de medicação e os documentos"
+          ]
+        },
+        {
+          "titulo": "Marcação do local",
+          "texto": "O cirurgião marca o lado a operar. Confirme com ele que é o lado certo antes de entrar no bloco."
+        },
+        {
+          "titulo": "Em casa, depois",
+          "texto": "Cuide da ferida como lhe explicaram. Tome os analgésicos como foi receitado. Não conduza nem levante peso até lhe dizerem que pode."
+        },
+        {
+          "titulo": "Sinais de alarme",
+          "texto": "Febre, hemorragia, dor que aumenta, falta de ar ou vómitos que não passam. Ligue para o SNS 24 e, se for grave, para o 112.",
+          "destaque": true
+        }
+      ]
+    },
+    {
+      "id": "medicacao",
+      "titulo": "A minha medicação",
+      "resumo": "Uma lista que o acompanha a todo o lado.",
+      "icone": "medicacao",
+      "seccoes": [
+        {
+          "titulo": "Porque ter a lista",
+          "texto": "Na consulta, na urgência e no internamento, mostre a lista. Evita repetir tudo de memória e impede que lhe receitem o mesmo medicamento duas vezes."
+        },
+        {
+          "titulo": "Como manter a lista",
+          "texto": "Escreva o nome do princípio ativo, a dose e as horas. Traga as caixas. Atualize a lista no mesmo dia em que o médico muda alguma coisa."
+        },
+        {
+          "titulo": "Genéricos",
+          "texto": "O mesmo princípio ativo pode ter nomes e caixas diferentes. Por isso a lista usa o princípio ativo: assim não há doses duplicadas."
+        },
+        {
+          "titulo": "Quando a lista muda",
+          "texto": "Depois de uma alta, quando o médico para um medicamento ou começa outro, corrija no mesmo dia. Uma lista desatualizada é pior do que não ter lista."
+        }
+      ]
+    },
+    {
+      "id": "erros",
+      "titulo": "Erros de medicação",
+      "resumo": "Reconhecer e travar a tempo.",
+      "icone": "erro",
+      "seccoes": [
+        {
+          "titulo": "Os erros mais frequentes",
+          "texto": "Quase todos começam numa distração pequena.",
+          "pontos": [
+            "Trocar caixas parecidas",
+            "Tomar a dose duas vezes",
+            "Esquecer uma toma",
+            "Genérico com nome diferente do habitual",
+            "Tomar à hora errada"
+          ]
+        },
+        {
+          "titulo": "Antes de tomar",
+          "texto": "Leia o nome e a dose. Confirme se é a hora certa. Se tiver dúvida, não tome: pergunte ao farmacêutico ou ligue para o SNS 24."
+        },
+        {
+          "titulo": "Se suspeitar de um erro",
+          "texto": "Não tome mais para compensar. Ligue para o SNS 24. Se se sentir mal, ligue 112. Guarde a caixa para mostrar.",
+          "destaque": true
+        },
+        {
+          "titulo": "Na farmácia",
+          "texto": "Peça o medicamento pelo princípio ativo. Leve a lista. Peça para explicarem as diferenças quando muda de marca."
+        }
+      ]
+    },
+    {
+      "id": "uso-seguro",
+      "titulo": "Usar o medicamento",
+      "resumo": "Tomar, guardar e eliminar sem erros.",
+      "icone": "caixa",
+      "seccoes": [
+        {
+          "titulo": "Tomar",
+          "texto": "Com ou sem comida, conforme a indicação. Tome com água, nunca com álcool. Não parta comprimidos nem abra cápsulas sem lhe dizerem que pode."
+        },
+        {
+          "titulo": "Guardar",
+          "texto": "Num sítio seco, longe do calor e da luz, fora do alcance das crianças. Alguns precisam de frigorífico: está escrito na caixa."
+        },
+        {
+          "titulo": "Eliminar",
+          "texto": "Leve os medicamentos que já não usa à farmácia. Não os deite no lixo nem na sanita."
+        },
+        {
+          "titulo": "Ler a embalagem",
+          "texto": "Procure o princípio ativo, a dose por comprimido, o prazo de validade e o lote. É esta informação que interessa ao profissional."
+        }
+      ]
+    },
+    {
+      "id": "quedas",
+      "titulo": "Evitar quedas",
+      "resumo": "Em casa e no hospital.",
+      "icone": "queda",
+      "seccoes": [
+        {
+          "titulo": "Em casa",
+          "texto": "Uma casa segura é uma casa sem surpresas no chão.",
+          "pontos": [
+            "Acenda a luz dos corredores e da casa de banho",
+            "Tire tapetes soltos e fios do chão",
+            "Ponha barras no duche e junto à sanita",
+            "Use calçado fechado com sola antiderrapante"
+          ]
+        },
+        {
+          "titulo": "Levantar devagar",
+          "texto": "Sente-se na beira da cama, conte até dez, apoie-se numa coisa firme e só depois se levante. Isto evita a tontura que faz cair."
+        },
+        {
+          "titulo": "Medicamentos que aumentam o risco",
+          "texto": "Alguns medicamentos para a tensão, para dormir ou para a ansiedade dão tonturas. Peça ao médico ou ao farmacêutico para rever a lista."
+        },
+        {
+          "titulo": "Peça ajuda",
+          "texto": "No hospital, use o botão de chamada antes de se levantar. Em casa, peça a alguém para estar por perto quando se sentir tonto."
+        },
+        {
+          "titulo": "Se cair",
+          "texto": "Se bater com a cabeça, procure ajuda mesmo que se sinta bem.",
+          "destaque": true
+        }
+      ]
+    },
+    {
+      "id": "criancas",
+      "titulo": "Crianças no hospital",
+      "resumo": "Para a criança e para quem a acompanha.",
+      "icone": "crianca",
+      "seccoes": [
+        {
+          "titulo": "Para os pais",
+          "texto": "Pequenos gestos evitam a maior parte dos acidentes na cama.",
+          "pontos": [
+            "Mantenha as grades da cama levantadas",
+            "Deixe o botão de chamada ao alcance",
+            "Não deixe a criança sozinha em cima da cama",
+            "Segure a criança durante os tratamentos"
+          ]
+        },
+        {
+          "titulo": "Cateter e sondas",
+          "texto": "A criança não deve mexer nem puxar. Verifique o penso. Se estiver vermelho, inchado ou molhado, chame a equipa."
+        },
+        {
+          "titulo": "Quedas e queimaduras",
+          "texto": "Nada de bebidas quentes junto à cama. A criança não deve subir para cadeiras nem para parapeitos."
+        },
+        {
+          "titulo": "Higiene das mãos",
+          "texto": "Lave as mãos antes e depois de cuidar da criança e ajude-a a lavar as dela. É a forma mais simples de evitar infeções."
+        },
+        {
+          "titulo": "Falar com a criança",
+          "texto": "Diga à criança o que vai acontecer, em palavras simples, antes de acontecer. Uma criança que entende assusta-se menos e mexe menos nos dispositivos."
+        }
+      ]
+    },
+    {
+      "id": "prevencao",
+      "titulo": "Prevenir erros",
+      "resumo": "Se algo não lhe parece bem, diga.",
+      "icone": "escudo",
+      "seccoes": [
+        {
+          "titulo": "O doente vê o que ninguém vê",
+          "texto": "Sabe o seu nome, os seus medicamentos e como se sente. É a pessoa certa para notar que algo está diferente."
+        },
+        {
+          "titulo": "Três perguntas",
+          "texto": "Pergunte sempre antes de qualquer procedimento.",
+          "pontos": [
+            "Quem me está a tratar?",
+            "O que me vão fazer?",
+            "Para que serve?"
+          ]
+        },
+        {
+          "titulo": "Como dizer",
+          "texto": "Diga na hora, à pessoa que está a fazer o procedimento. Se não for ouvido, fale com o responsável do serviço."
+        },
+        {
+          "titulo": "Não é uma queixa",
+          "texto": "Dizer que algo não parece bem não é criar problemas. É a forma mais eficaz de travar um erro antes de ele acontecer."
+        }
+      ]
+    },
+    {
+      "id": "vacinacao",
+      "titulo": "Vacinação",
+      "resumo": "Proteger-se e proteger quem está perto.",
+      "icone": "vacina",
+      "seccoes": [
+        {
+          "titulo": "Porque vacinar",
+          "texto": "As vacinas protegem quem as toma e ajudam a proteger quem não as pode tomar. Quanto mais pessoas vacinadas, menos a doença circula."
+        },
+        {
+          "titulo": "Dúvidas comuns",
+          "texto": "É normal ter dúvidas. Fale com o seu médico ou com o farmacêutico: eles explicam o que a vacina faz e quais os efeitos esperados."
+        },
+        {
+          "titulo": "Antes de ir",
+          "texto": "Leve estes dados consigo.",
+          "pontos": [
+            "O boletim de vacinas",
+            "A lista dos medicamentos que toma",
+            "As alergias e reações que já teve"
+          ]
+        },
+        {
+          "titulo": "Onde",
+          "texto": "No centro de saúde ou na unidade de saúde da sua área. Se não souber, pergunte na sua unidade."
+        }
+      ]
+    }
+  ]
+}

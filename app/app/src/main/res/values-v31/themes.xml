@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android 12+ draws its own launch screen from these: the launcher icon (the brand's light icon) on the
+         app's sand background, so opening the app goes straight from icon to Início with no colour flash. -->
+    <style name="Theme.VendanzaCare" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/areia</item>
+        <item name="android:windowSplashScreenBackground">@color/areia</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/areia</item>
+    </style>
+</resources>

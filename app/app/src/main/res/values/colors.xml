@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand palette — measured in brand/README.md. Mirrors ui/tema/Cor.kt for the few places XML needs it. -->
+    <color name="azul_vendanza">#0B5FA5</color>
+    <color name="turquesa_cuidado">#00786B</color>
+    <color name="azul_noite">#0B1A2B</color>
+    <!-- the app background since the 2026-11-09 UI pass (warm sand); the window paints it before Compose does -->
+    <color name="areia">#F5F2EC</color>
+</resources>

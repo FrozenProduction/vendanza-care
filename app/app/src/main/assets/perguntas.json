@@ -1,0 +1,26 @@
+{
+  "versao": 1,
+  "nota": "Perguntas para levar a uma consulta, a uma urgência ou a uma alta. Escritas para caber numa linha de ecra de telemovel.",
+  "perguntas": [
+    { "id": "cirurgia-1", "tema": "Antes de uma cirurgia", "texto": "O que me vai fazer e para quê?" },
+    { "id": "cirurgia-2", "tema": "Antes de uma cirurgia", "texto": "Quais são os riscos e o que pode correr mal?" },
+    { "id": "cirurgia-3", "tema": "Antes de uma cirurgia", "texto": "Há outra forma de tratar isto?" },
+    { "id": "cirurgia-4", "tema": "Antes de uma cirurgia", "texto": "O que acontece se eu não fizer?" },
+    { "id": "cirurgia-5", "tema": "Antes de uma cirurgia", "texto": "Que medicamentos tenho de parar antes?" },
+    { "id": "cirurgia-6", "tema": "Antes de uma cirurgia", "texto": "Quando posso voltar a conduzir e a trabalhar?" },
+
+    { "id": "medicamentos-1", "tema": "Sobre os medicamentos", "texto": "Este medicamento novo substitui algum que eu já tomo?" },
+    { "id": "medicamentos-2", "tema": "Sobre os medicamentos", "texto": "Tomo com ou sem comida?" },
+    { "id": "medicamentos-3", "tema": "Sobre os medicamentos", "texto": "O que faço se me esquecer de uma toma?" },
+    { "id": "medicamentos-4", "tema": "Sobre os medicamentos", "texto": "Que efeitos secundários devo vigiar?" },
+
+    { "id": "alta-1", "tema": "Sobre a alta", "texto": "Que cuidados tenho de ter em casa?" },
+    { "id": "alta-2", "tema": "Sobre a alta", "texto": "Que sinais de alarme devo vigiar?" },
+    { "id": "alta-3", "tema": "Sobre a alta", "texto": "Quem ligo se piorar, e a que horas?" },
+    { "id": "alta-4", "tema": "Sobre a alta", "texto": "Preciso de cuidados em casa. Quem os dá?" },
+
+    { "id": "dia-1", "tema": "No dia a dia", "texto": "Pode escrever isso, por favor?" },
+    { "id": "dia-2", "tema": "No dia a dia", "texto": "Pode explicar outra vez, mais devagar?" },
+    { "id": "dia-3", "tema": "No dia a dia", "texto": "A quem posso pedir ajuda nesta unidade?" }
+  ]
+}

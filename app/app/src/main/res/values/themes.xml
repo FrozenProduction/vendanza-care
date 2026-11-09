@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light-only on purpose: a medical app should not depend on the wallpaper-derived dark palette,
+         and the 112 band's contrast is part of the accessibility contract. -->
+    <style name="Theme.VendanzaCare" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/areia</item>
+        <!-- status bar is transparent and drawn by the app (MainActivity, edge-to-edge) -->
+    </style>
+</resources>

@@ -1,9 +1,9 @@
-# ai — AI service (IA)
+# ai — serviço de inteligência artificial (IA)
 
-Where the intelligence of VendanzaCare lives. Its scope is fixed by the PA proposal (PA02 block 5):
-plain-language rewriting of clinical text, personalisation of content, and possibly risk detection.
+É aqui que vive a parte de inteligência do VendanzaCare. O âmbito vem da proposta de sistema (PA02, bloco
+5): reescrever texto clínico em linguagem simples, personalizar conteúdo e, possivelmente, detetar risco.
 
-**Empty on purpose.** The IA course project (P01 starts 17/10/2026) and the PA system proposal define the
-interface first — building an AI service before the requirements exist would be guessing.
+**Vazia de propósito.** O projeto da UC de IA e a proposta do PA definem primeiro a interface. Construir um
+serviço de IA antes de existirem requisitos seria adivinhar.
 
-Note: the IA course's own P01/P02 are separate deliverables, not this folder.
+Os trabalhos P01 e P02 da UC de IA são entregas separadas e não vivem nesta pasta.

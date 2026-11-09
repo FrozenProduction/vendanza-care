@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The only folder the FileProvider exposes: the app's own packaging photos (dados/Fotos.kt).
+     The camera app gets a one-off write grant to a single file in it; nothing else is reachable. -->
+<paths>
+    <files-path name="fotos" path="fotos/" />
+</paths>
