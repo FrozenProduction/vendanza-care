@@ -208,4 +208,56 @@ class RegrasTest {
         assertTrue(texto.contains("Maria · 12/03/1948"))
         assertTrue(texto.contains("Paracetamol"))
     }
+
+    // ---- tomas registadas e contactos
+
+    private val manhaENoite = listOf(
+        Medicamento(id = "a", nome = "Paracetamol", horas = listOf(480, 1200)),
+        Medicamento(id = "b", nome = "Metformina", horas = listOf(480)),
+    )
+
+    @Test
+    fun `a proxima toma salta as que ja foram marcadas`() {
+        val tomadas = setOf(Regras.chaveToma("a", 480), Regras.chaveToma("b", 480))
+        assertEquals(1200, Regras.proximaToma(manhaENoite, 7 * 60, tomadas)?.hora)
+        // tomorrow starts clean: the marks are today's
+        val amanha = Regras.proximaToma(manhaENoite, 21 * 60, tomadas)
+        assertEquals(480, amanha?.hora)
+        assertEquals(true, amanha?.amanha)
+    }
+
+    @Test
+    fun `em falta pergunta pelas tomas recentes que nao foram marcadas`() {
+        val nenhuma = Regras.emFalta(manhaENoite, 8 * 60 + 20, emptySet())
+        assertEquals(480, nenhuma?.first)
+        assertEquals(listOf("a", "b"), nenhuma?.second?.map { it.id })
+
+        // one of the two ticked: only the other is still asked about
+        val umaMarcada = Regras.emFalta(manhaENoite, 8 * 60 + 20, setOf(Regras.chaveToma("a", 480)))
+        assertEquals(listOf("b"), umaMarcada?.second?.map { it.id })
+
+        val ambas = setOf(Regras.chaveToma("a", 480), Regras.chaveToma("b", 480))
+        assertNull(Regras.emFalta(manhaENoite, 8 * 60 + 20, ambas))
+
+        // before the time it is not missing yet, and after the window it is history
+        assertNull(Regras.emFalta(manhaENoite, 7 * 60 + 59, emptySet()))
+        assertNull(Regras.emFalta(manhaENoite, 8 * 60 + Regras.JANELA_EM_FALTA + 1, emptySet()))
+    }
+
+    @Test
+    fun `um alarme que toca depois da meia-noite e da toma de ontem`() {
+        assertEquals(0, Regras.diaDoAlarme(8 * 60 + 3, 8 * 60))
+        assertEquals(0, Regras.diaDoAlarme(8 * 60, 8 * 60))
+        assertEquals(-1, Regras.diaDoAlarme(5, 23 * 60 + 55))
+    }
+
+    @Test
+    fun `numeros de telefone`() {
+        assertEquals("253000000", Regras.numeroParaMarcar(" 253 000 000 "))
+        assertEquals("+351253000000", Regras.numeroParaMarcar("+351 253-000-000"))
+        assertEquals("112", Regras.numeroParaMarcar("1+12"))
+        assertTrue(Regras.numeroValido("112"))
+        assertTrue(!Regras.numeroValido("12"))
+        assertTrue(!Regras.numeroValido("bombeiros"))
+    }
 }

@@ -55,8 +55,8 @@ fun EcraModulos(modulos: List<Modulo>, aoAbrir: (String) -> Unit) {
     ) {
         item(span = { GridItemSpan(maxLineSpan) }) {
             TituloEcra(
-                titulo = t.aprender,
-                subtitulo = t.aprenderIntro,
+                titulo = t.guiasTitulo,
+                subtitulo = t.guiasIntro,
                 lateral = 0.dp, // the grid already pads the sides
             )
         }

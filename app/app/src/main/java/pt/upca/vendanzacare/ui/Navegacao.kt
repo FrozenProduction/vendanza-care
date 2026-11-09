@@ -56,12 +56,14 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import pt.upca.vendanzacare.dados.Conteudo
+import pt.upca.vendanzacare.dados.ContactosStore
 import pt.upca.vendanzacare.dados.Fotos
 import pt.upca.vendanzacare.dados.MedicacaoStore
 import pt.upca.vendanzacare.dados.Preferencias
 import pt.upca.vendanzacare.dominio.Medicamento
 import pt.upca.vendanzacare.dominio.Regras
 import pt.upca.vendanzacare.lembretes.Lembretes
+import pt.upca.vendanzacare.ui.ecras.EcraContactos
 import pt.upca.vendanzacare.ui.ecras.EcraDefinicoes
 import pt.upca.vendanzacare.ui.ecras.EcraInicio
 import pt.upca.vendanzacare.ui.ecras.EcraMedicacao
@@ -84,10 +86,11 @@ import pt.upca.vendanzacare.ui.tema.TomAzul
  */
 sealed class Ecra(val rota: String) {
     data object Inicio : Ecra("inicio")
-    data object Aprender : Ecra("aprender")
+    data object Guias : Ecra("guias")
     data object Medicacao : Ecra("medicacao")
     data object Definicoes : Ecra("definicoes")
     data object Perguntas : Ecra("perguntas")
+    data object Contactos : Ecra("contactos")
 
     data object Modulo : Ecra("modulo/{id}") {
         fun caminho(id: String) = "modulo/$id"
@@ -99,7 +102,7 @@ sealed class Ecra(val rota: String) {
 
     companion object {
         val base: List<String> by lazy {
-            listOf(Inicio.rota, Aprender.rota, Medicacao.rota, Definicoes.rota)
+            listOf(Inicio.rota, Guias.rota, Medicacao.rota, Definicoes.rota)
         }
     }
 }
@@ -116,6 +119,8 @@ fun AppVendanzaCare() {
     val leitor = rememberLeitor()
     val prefs = remember { Preferencias(contexto) }
     val store = remember { MedicacaoStore(contexto) }
+    val agenda = remember { ContactosStore(contexto) }
+    val tomas = rememberTomas()
     val conteudos = remember { Conteudo.ler(contexto) }
 
     var escala by remember { mutableStateOf(prefs.escalaTexto) }
@@ -124,6 +129,7 @@ fun AppVendanzaCare() {
     var nascimento by remember { mutableStateOf(prefs.nascimento) }
     var medicamentos by remember { mutableStateOf(store.listar()) }
     var escolhidas by remember { mutableStateOf(prefs.perguntasEscolhidas()) }
+    var contactos by remember { mutableStateOf(agenda.listar()) }
 
     // re-armed on every launch and after every edit; ArranqueReceiver covers reboots (architecture.md §10)
     LaunchedEffect(medicamentos) {
@@ -195,15 +201,32 @@ fun AppVendanzaCare() {
                         EcraInicio(
                             medicamentos = medicamentos,
                             nome = nome,
-                            aoAbrirModulos = { mudarSeparador(Ecra.Aprender.rota) },
+                            aoAbrirModulos = { mudarSeparador(Ecra.Guias.rota) },
                             aoAbrirMedicacao = { mudarSeparador(Ecra.Medicacao.rota) },
                             numeroTemas = conteudos.modulos.size,
                             aoAbrirPerguntas = { nav.navigate(Ecra.Perguntas.rota) },
                             aoAdicionarMedicamento = { nav.navigate(Ecra.Medicamento.caminho(NOVO)) },
+                            aoAbrirContactos = { nav.navigate(Ecra.Contactos.rota) },
+                            tomas = tomas,
                         )
                     }
 
-                    composable(Ecra.Aprender.rota) {
+                    composable(Ecra.Contactos.rota) {
+                        EcraContactos(
+                            contactos = contactos,
+                            aoGuardar = {
+                                agenda.guardar(it)
+                                contactos = agenda.listar()
+                            },
+                            aoApagar = {
+                                agenda.apagar(it)
+                                contactos = agenda.listar()
+                            },
+                            aoVoltar = { nav.popBackStack() },
+                        )
+                    }
+
+                    composable(Ecra.Guias.rota) {
                         EcraModulos(
                             modulos = conteudos.modulos,
                             aoAbrir = { nav.navigate(Ecra.Modulo.caminho(it)) },
@@ -289,7 +312,7 @@ fun AppVendanzaCare() {
 
 /**
  * Four tabs, each with icon **and** word. The earlier icon-only bar saved space, but an "i" in a circle does not
- * say "Aprender" to someone who has never used an app like this, and the usability literature on older adults
+ * say "Guias" to someone who has never used an app like this, and the usability literature on older adults
  * is consistent that unlabeled icons are the first thing they fail on.
  *
  * Labels never wrap: from large text sizes on they shrink step by step (down to 12 sp) to fit their quarter
@@ -299,7 +322,7 @@ fun AppVendanzaCare() {
 private fun BarraInferior(rota: String, textos: Textos, aoMudar: (String) -> Unit) {
     val itens = listOf(
         Triple(Ecra.Inicio.rota, Icones.Inicio, textos.inicio),
-        Triple(Ecra.Aprender.rota, Icones.Aprender, textos.aprender),
+        Triple(Ecra.Guias.rota, Icones.Guias, textos.guias),
         Triple(Ecra.Medicacao.rota, Icones.Comprimido, textos.medicacao),
         Triple(Ecra.Definicoes.rota, Icones.Ajustes, textos.definicoes),
     )

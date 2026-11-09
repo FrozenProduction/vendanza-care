@@ -56,3 +56,13 @@ data class Toma(
     val hora: Int,
     val amanha: Boolean = false,
 )
+
+/**
+ * A number the person wants close at hand — the local fire brigade, a relative, the health centre. Stored only
+ * on the phone, next to the fixed national numbers (112, SNS 24, Centro Antivenenos) that are not editable.
+ */
+data class Contacto(
+    val id: String,
+    val nome: String,
+    val numero: String,
+)

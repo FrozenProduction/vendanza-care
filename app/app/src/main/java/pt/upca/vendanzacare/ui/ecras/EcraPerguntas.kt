@@ -67,7 +67,7 @@ fun EcraPerguntas(
 
     fun partilhar() {
         val texto = perguntas.filter { it.id in escolhidas }
-            .joinToString(separator = "\n", prefix = "${t.perguntasMedico}:\n\n") { "• ${it.texto}" }
+            .joinToString(separator = "\n", prefix = "${t.perguntasProfissionais}:\n\n") { "• ${it.texto}" }
         if (texto.isBlank()) return
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
@@ -77,7 +77,7 @@ fun EcraPerguntas(
     }
 
     Column(Modifier.fillMaxSize()) {
-        Cabecalho(titulo = t.perguntasMedico, aoVoltar = aoVoltar)
+        Cabecalho(titulo = t.perguntasProfissionais, aoVoltar = aoVoltar)
 
         LazyColumn(
             modifier = Modifier

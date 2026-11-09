@@ -44,6 +44,11 @@
             android:name=".lembretes.AlarmeReceiver"
             android:exported="false" />
 
+        <!-- The notification's "Já tomei" / "Daqui a 10 min" buttons. Not exported: only our PendingIntents. -->
+        <receiver
+            android:name=".lembretes.TomaReceiver"
+            android:exported="false" />
+
         <!-- Re-arms the reminders after reboot, update, or a clock/time-zone change. System broadcasts only. -->
         <receiver
             android:name=".lembretes.ArranqueReceiver"

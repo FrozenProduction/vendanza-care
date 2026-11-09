@@ -8,6 +8,7 @@ import android.content.Intent
 import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.os.Build
+import androidx.core.app.NotificationManagerCompat
 import pt.upca.vendanzacare.R
 import pt.upca.vendanzacare.dominio.Medicamento
 import java.util.Calendar
@@ -87,6 +88,35 @@ object Lembretes {
 
     private fun pedidoId(idMedicamento: String, hora: Int): Int = "$idMedicamento-$hora".hashCode()
 
+    /** One notification per (medicine, time), so "Já tomei" closes exactly the one it was pressed on. */
+    fun idNotificacao(idMedicamento: String, hora: Int): Int = "aviso-$idMedicamento-$hora".hashCode()
+
+    /** Removes the dose notification if it is still on screen — marked taken in the app, nothing left to ask. */
+    fun fecharNotificacao(context: Context, idMedicamento: String, hora: Int) {
+        runCatching { NotificationManagerCompat.from(context).cancel(idNotificacao(idMedicamento, hora)) }
+    }
+
+    /**
+     * "Daqui a 10 min": rings the same dose again later, for the same [dia]. Its own request code, so the
+     * daily alarm for that dose is untouched, and re-snoozing just moves this one.
+     */
+    fun adiar(context: Context, original: Intent, dia: String, minutos: Int = ADIAR_MINUTOS) {
+        val gestor = context.getSystemService(AlarmManager::class.java) ?: return
+        val id = original.getStringExtra(EXTRA_ID) ?: return
+        val hora = original.getIntExtra(EXTRA_HORA, -1)
+        val intent = Intent(context, AlarmeReceiver::class.java).apply {
+            putExtras(original)
+            action = null
+            putExtra(EXTRA_DIA, dia)
+        }
+        val pendente = pendente(context, "adiar-$id-$hora".hashCode(), intent)
+        gestor.setAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            System.currentTimeMillis() + minutos * 60_000L,
+            pendente,
+        )
+    }
+
     private fun intentVazio(context: Context) = Intent(context, AlarmeReceiver::class.java)
 
     private fun intentCom(context: Context, m: Medicamento, hora: Int) =
@@ -111,4 +141,7 @@ object Lembretes {
     const val EXTRA_DOSE = "dose"
     const val EXTRA_NOTA = "nota"
     const val EXTRA_HORA = "hora"
+    /** Set only on a snoozed alarm: the day the dose belongs to, which may no longer be today. */
+    const val EXTRA_DIA = "dia"
+    const val ADIAR_MINUTOS = 10
 }

@@ -26,7 +26,7 @@ import pt.upca.vendanzacare.ui.tema.TomVerde
 object Icones {
     // ---- navegação e ações -------------------------------------------------
     val Inicio by lazy { icone("M3.5 10.5 12 3.5l8.5 7", "M5.5 9v11h13V9", "M10 20v-5h4v5") }
-    val Aprender by lazy {
+    val Guias by lazy {
         icone(
             "M12 6.5C10 5 7 4.5 3.5 4.5v14c3.5 0 6.5.5 8.5 2 2-1.5 5-2 8.5-2v-14c-3.5 0-6.5.5-8.5 2z",
             "M12 6.5v14",

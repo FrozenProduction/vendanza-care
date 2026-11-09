@@ -373,7 +373,7 @@ fun BotaoRedondo(
 
 // ---- cabeçalhos -------------------------------------------------------------
 
-/** Title of a tab screen (Início, Aprender, Medicação, Definições): big, with an optional line and action. */
+/** Title of a tab screen (Início, Guias, Medicação, Definições): big, with an optional line and action. */
 @Composable
 fun TituloEcra(
     titulo: String,
@@ -477,7 +477,7 @@ fun BarraDaMarca(modifier: Modifier = Modifier) {
  * not for triage, so this is a call button, not a symptom checker. Both numbers open the dialer pre-filled.
  */
 @Composable
-fun Faixa112(modifier: Modifier = Modifier) {
+fun Faixa112(modifier: Modifier = Modifier, aoMaisContactos: (() -> Unit)? = null) {
     val contexto = LocalContext.current
     val t = LocalTextos.current
     Cartao(modifier = modifier, cor = EmergenciaFundo) {
@@ -503,6 +503,10 @@ fun Faixa112(modifier: Modifier = Modifier) {
             tom = Tom(Papel, EmergenciaTexto),
             borda = EmergenciaTexto,
         )
+        if (aoMaisContactos != null) {
+            Spacer(Modifier.padding(top = 8.dp))
+            BotaoContorno(t.outrosContactos, aoMaisContactos, icone = Icones.Pessoa, cor = EmergenciaTexto)
+        }
     }
 }
 

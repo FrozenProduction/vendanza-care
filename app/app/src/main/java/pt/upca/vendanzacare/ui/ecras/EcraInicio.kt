@@ -1,6 +1,7 @@
 package pt.upca.vendanzacare.ui.ecras
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,29 +10,38 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import pt.upca.vendanzacare.dados.RegistoTomas
 import pt.upca.vendanzacare.dominio.Medicamento
 import pt.upca.vendanzacare.dominio.Regras
 import pt.upca.vendanzacare.ui.LocalTextos
+import pt.upca.vendanzacare.ui.Tomas
+import pt.upca.vendanzacare.ui.componentes.ALVO
+import pt.upca.vendanzacare.ui.componentes.BotaoContorno
 import pt.upca.vendanzacare.ui.componentes.BarraDaMarca
 import pt.upca.vendanzacare.ui.componentes.BotaoPrincipal
 import pt.upca.vendanzacare.ui.componentes.Cartao
@@ -53,14 +63,18 @@ import pt.upca.vendanzacare.ui.tema.Tom
 import pt.upca.vendanzacare.ui.tema.TomAzul
 import pt.upca.vendanzacare.ui.tema.TomLilas
 import pt.upca.vendanzacare.ui.tema.TomTurquesa
+import pt.upca.vendanzacare.ui.tema.TomVerde
 import pt.upca.vendanzacare.ui.tema.textoGrande
 
 /**
  * The first screen answers one question: what do I do now?
  *
- * Top to bottom: who and when (greeting, date) → the next dose, as the one coloured card → the emergency band →
- * the rest of today → two doors the tab bar does not have (Aprender is also a tab, but it is the app's core
+ * Top to bottom: who and when (greeting, date) → the dose to take, as the one coloured card → the emergency band →
+ * the rest of today → two doors the tab bar does not have (Guias is also a tab, but it is the app's core
  * content and earns a door; Perguntas has no tab).
+ *
+ * The coloured card asks "Já tomei?" for a dose that is due and not yet marked (up to [Regras.JANELA_EM_FALTA]
+ * minutes after its time), and otherwise shows the next one. Marks come from here or from the notification.
  */
 @Composable
 fun EcraInicio(
@@ -71,10 +85,15 @@ fun EcraInicio(
     aoAbrirMedicacao: () -> Unit,
     aoAbrirPerguntas: () -> Unit,
     aoAdicionarMedicamento: () -> Unit,
+    aoAbrirContactos: () -> Unit,
+    tomas: Tomas,
 ) {
     val t = LocalTextos.current
     val agora = minutoAgora()
-    val proxima = Regras.proximaToma(medicamentos, agora)
+    val dia = remember(agora) { RegistoTomas.dia() }
+    val tomadas = tomas.de(dia)
+    val emFalta = Regras.emFalta(medicamentos, agora, tomadas)
+    val proxima = Regras.proximaToma(medicamentos, agora, tomadas)
     val faltam = proxima?.let { Regras.minutosAte(agora, it.hora) } ?: 0
     val quando = when {
         proxima == null -> ""
@@ -110,8 +129,26 @@ fun EcraInicio(
 
         item {
             when {
+                emFalta != null -> {
+                    val (hora, lista) = emFalta
+                    val passaram = agora - hora
+                    CartaoToma(
+                        medicamentos = lista,
+                        hora = hora,
+                        quando = when {
+                            passaram == 0 -> t.agora
+                            passaram < 60 -> t.passaramMinutos(passaram)
+                            else -> t.passaramHorasMinutos(passaram / 60, passaram % 60)
+                        },
+                        aoAbrirMedicacao = aoAbrirMedicacao,
+                        aoTomar = { tomas.marcar(dia, lista.map { it.id }, hora, tomada = true) },
+                    )
+                }
                 proxima != null -> CartaoToma(
-                    medicamentos = medicamentos.filter { proxima.hora in it.horas },
+                    medicamentos = medicamentos.filter {
+                        proxima.hora in it.horas &&
+                            (proxima.amanha || Regras.chaveToma(it.id, proxima.hora) !in tomadas)
+                    },
                     hora = proxima.hora,
                     quando = quando,
                     aoAbrirMedicacao = aoAbrirMedicacao,
@@ -133,36 +170,42 @@ fun EcraInicio(
             }
         }
 
-        item { Faixa112() }
+        item { Faixa112(aoMaisContactos = aoAbrirContactos) }
 
         val hoje = tomasDeHoje(medicamentos)
         if (hoje.isNotEmpty()) {
-            item { TituloSeccao(t.tomasDeHoje) }
+            item {
+                Column {
+                    TituloSeccao(t.tomasDeHoje)
+                    Text(t.agendaAjuda, style = MaterialTheme.typography.bodyMedium, color = TextoSecundario)
+                }
+            }
             item {
                 AgendaDeHoje(
                     tomas = hoje,
                     agora = agora,
                     proxima = proxima?.takeIf { !it.amanha }?.hora,
-                    aoTocar = aoAbrirMedicacao,
+                    tomadas = tomadas,
+                    aoMarcar = { m, hora, tomada -> tomas.marcar(dia, listOf(m.id), hora, tomada) },
                 )
             }
         }
 
         item {
-            val aprender: @Composable (Modifier) -> Unit = { m ->
-                Porta(t.aprender, t.contagemTemas(numeroTemas), Icones.Aprender, TomTurquesa, aoAbrirModulos, m)
+            val guias: @Composable (Modifier) -> Unit = { m ->
+                Porta(t.guias, t.contagemTemas(numeroTemas), Icones.Guias, TomTurquesa, aoAbrirModulos, m)
             }
             val perguntas: @Composable (Modifier) -> Unit = { m ->
-                Porta(t.perguntasMedico, t.prepararConsulta, Icones.Pergunta, TomLilas, aoAbrirPerguntas, m)
+                Porta(t.perguntasProfissionais, t.prepararConsulta, Icones.Pergunta, TomLilas, aoAbrirPerguntas, m)
             }
             if (textoGrande()) {
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    aprender(Modifier)
+                    guias(Modifier)
                     perguntas(Modifier)
                 }
             } else {
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    aprender(Modifier.weight(1f))
+                    guias(Modifier.weight(1f))
                     perguntas(Modifier.weight(1f))
                 }
             }
@@ -179,8 +222,9 @@ private fun tomasDeHoje(medicamentos: List<Medicamento>): List<Pair<Int, List<Me
         .map { (hora, lista) -> hora to lista }
 
 /**
- * The hero. Big time, how long until it, and every medicine due then — two pills at 08:00 are one moment
- * for the person, not two cards.
+ * The hero. Big time, how long until (or since) it, and every medicine due then — two pills at 08:00 are one
+ * moment for the person, not two cards. With [aoTomar] it is a due dose: "Está na hora" and a "Já tomei"
+ * button that marks all of them; the list below still marks them one by one.
  */
 @Composable
 private fun CartaoToma(
@@ -188,6 +232,7 @@ private fun CartaoToma(
     hora: Int,
     quando: String,
     aoAbrirMedicacao: () -> Unit,
+    aoTomar: (() -> Unit)? = null,
 ) {
     val t = LocalTextos.current
     Column(
@@ -197,7 +242,11 @@ private fun CartaoToma(
             .background(GradienteToma)
             .padding(22.dp),
     ) {
-        Etiqueta(t.proximaToma, fundo = Color.White.copy(alpha = 0.18f), tinta = Color.White)
+        Etiqueta(
+            if (aoTomar != null) t.estaNaHora else t.proximaToma,
+            fundo = Color.White.copy(alpha = 0.18f),
+            tinta = Color.White,
+        )
         Spacer(Modifier.height(10.dp))
         Text(Regras.horaCurta(hora), style = MaterialTheme.typography.displayMedium, color = Color.White)
         Text(quando, style = MaterialTheme.typography.bodyLarge, color = Color.White)
@@ -226,13 +275,19 @@ private fun CartaoToma(
         }
 
         Spacer(Modifier.height(18.dp))
-        BotaoPrincipal(
-            texto = t.verMedicacao,
-            aoTocar = aoAbrirMedicacao,
-            fundo = Papel,
-            tinta = AzulVendanza,
-            seta = true,
-        )
+        if (aoTomar != null) {
+            BotaoPrincipal(texto = t.jaTomei, aoTocar = aoTomar, icone = Icones.Visto, fundo = Papel, tinta = AzulVendanza)
+            Spacer(Modifier.height(8.dp))
+            BotaoContorno(texto = t.verMedicacao, aoTocar = aoAbrirMedicacao, cor = Color.White)
+        } else {
+            BotaoPrincipal(
+                texto = t.verMedicacao,
+                aoTocar = aoAbrirMedicacao,
+                fundo = Papel,
+                tinta = AzulVendanza,
+                seta = true,
+            )
+        }
     }
 }
 
@@ -252,52 +307,90 @@ private fun CartaoConvite(titulo: String, texto: String, botao: String, icone: I
 }
 
 /**
- * Today as a list of times. Past times are in grey (never faded below 6:1 — "past" is not "unreadable"), the
- * next one is tinted and labelled. No tick marks: the app does not know whether a dose was taken, and a tick
- * would say it was.
+ * Today as a list of times, one row per medicine, each a checkbox: tap = taken, tap again = not. Past times
+ * are in grey (never faded below 6:1 — "past" is not "unreadable"), the next one is tinted and labelled.
+ * A tick means the person said so (here or on the notification) — the app never ticks on its own.
  */
 @Composable
-private fun AgendaDeHoje(tomas: List<Pair<Int, List<Medicamento>>>, agora: Int, proxima: Int?, aoTocar: () -> Unit) {
+private fun AgendaDeHoje(
+    tomas: List<Pair<Int, List<Medicamento>>>,
+    agora: Int,
+    proxima: Int?,
+    tomadas: Set<String>,
+    aoMarcar: (Medicamento, Int, Boolean) -> Unit,
+) {
     val t = LocalTextos.current
-    Cartao(aoTocar = aoTocar, preenchimento = PaddingValues(vertical = 8.dp, horizontal = 8.dp)) {
+    Cartao(preenchimento = PaddingValues(vertical = 8.dp, horizontal = 8.dp)) {
         tomas.forEachIndexed { i, (hora, lista) ->
             val passou = hora < agora
             val eProxima = hora == proxima
             if (i > 0 && !eProxima && tomas.getOrNull(i - 1)?.first != proxima) {
                 HorizontalDivider(color = Linha, modifier = Modifier.padding(horizontal = 12.dp))
             }
-            Row(
-                modifier = Modifier
+            Column(
+                Modifier
                     .fillMaxWidth()
                     .clip(MaterialTheme.shapes.medium)
-                    .background(if (eProxima) TomAzul.fundo else Color.Transparent)
-                    .padding(horizontal = 12.dp, vertical = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                    .background(if (eProxima) TomAzul.fundo else Color.Transparent),
             ) {
-                Text(
-                    Regras.horaCurta(hora),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = when {
-                        eProxima -> AzulVendanza
-                        passou -> TextoSecundario
-                        else -> AzulNoite
-                    },
-                    modifier = Modifier.widthIn(min = 64.dp),
-                )
-                Spacer(Modifier.width(12.dp))
-                Text(
-                    lista.joinToString(", ") { it.nome },
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = if (eProxima) FontWeight.Bold else FontWeight.Normal,
-                    color = if (passou) TextoSecundario else AzulNoite,
-                    modifier = Modifier.weight(1f),
-                )
-                if (eProxima) {
-                    Spacer(Modifier.width(8.dp))
-                    Etiqueta(t.proxima, fundo = AzulVendanza, tinta = Color.White)
+                lista.forEachIndexed { j, m ->
+                    val tomada = Regras.chaveToma(m.id, hora) in tomadas
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(MaterialTheme.shapes.medium)
+                            .toggleable(value = tomada, role = Role.Checkbox, onValueChange = { aoMarcar(m, hora, it) })
+                            .semantics { stateDescription = if (tomada) t.tomada else t.porTomar }
+                            .heightIn(min = ALVO)
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            if (j == 0) Regras.horaCurta(hora) else "",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = when {
+                                eProxima -> AzulVendanza
+                                passou -> TextoSecundario
+                                else -> AzulNoite
+                            },
+                            modifier = Modifier.widthIn(min = 64.dp),
+                        )
+                        Spacer(Modifier.width(12.dp))
+                        Column(Modifier.weight(1f)) {
+                            Text(
+                                m.nome,
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = if (eProxima && !tomada) FontWeight.Bold else FontWeight.Normal,
+                                color = if (passou || tomada) TextoSecundario else AzulNoite,
+                            )
+                            if (tomada) {
+                                Text(t.tomada, style = MaterialTheme.typography.labelMedium, color = TomVerde.tinta)
+                            } else if (eProxima && j == 0) {
+                                // under the name, not beside it: beside, it broke "Paracetamol" in two
+                                Spacer(Modifier.height(4.dp))
+                                Etiqueta(t.proxima, fundo = AzulVendanza, tinta = Color.White)
+                            }
+                        }
+                        Spacer(Modifier.width(10.dp))
+                        Caixa(tomada)
+                    }
                 }
             }
         }
+    }
+}
+
+/** The tick box of a dose: green with a tick when taken, an outlined circle when not. */
+@Composable
+private fun Caixa(tomada: Boolean) {
+    Box(
+        modifier = Modifier
+            .size(32.dp)
+            .background(if (tomada) TomVerde.tinta else Papel, CircleShape)
+            .then(if (tomada) Modifier else Modifier.border(2.dp, TextoSecundario, CircleShape)),
+        contentAlignment = Alignment.Center,
+    ) {
+        if (tomada) Icon(Icones.Visto, contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
     }
 }
 

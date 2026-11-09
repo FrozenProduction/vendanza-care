@@ -84,13 +84,63 @@ object Regras {
     fun minutosAte(minutoAgora: Int, hora: Int): Int =
         if (hora >= minutoAgora) hora - minutoAgora else hora + MINUTOS_NO_DIA - minutoAgora
 
-    fun proximaToma(medicamentos: List<Medicamento>, minutoAgora: Int): Toma? {
+    /**
+     * The next dose from now on. Doses already marked taken today ([tomadas], keys from [chaveToma]) are
+     * skipped — someone who took the 13:00 pill early is asked about 20:00, not 13:00. Tomorrow starts clean.
+     */
+    fun proximaToma(medicamentos: List<Medicamento>, minutoAgora: Int, tomadas: Set<String> = emptySet()): Toma? {
         val candidatos = medicamentos.flatMap { m -> m.horas.map { h -> Toma(m, h) } }
         if (candidatos.isEmpty()) return null
-        val hoje = candidatos.filter { it.hora >= minutoAgora }.minByOrNull { it.hora }
+        val hoje = candidatos
+            .filter { it.hora >= minutoAgora && chaveToma(it.medicamento.id, it.hora) !in tomadas }
+            .minByOrNull { it.hora }
         if (hoje != null) return hoje
         return candidatos.minByOrNull { it.hora }?.copy(amanha = true)
     }
+
+    // ---------------------------------------------------------------- tomas registadas
+
+    /** How long a passed dose keeps asking "já tomou?" on the home screen before it becomes just history. */
+    const val JANELA_EM_FALTA = 180
+
+    /** One dose of one medicine on one day, as stored by `RegistoTomas`. The day is the key around it. */
+    fun chaveToma(idMedicamento: String, hora: Int): String = "$idMedicamento@$hora"
+
+    /**
+     * The earliest dose time in the last [janela] minutes that still has something not marked taken, with the
+     * medicines missing at that time. Null when everything due recently is ticked off (or nothing was due).
+     * Only today: a 23:30 dose is not asked about at 00:15.
+     */
+    fun emFalta(
+        medicamentos: List<Medicamento>,
+        minutoAgora: Int,
+        tomadas: Set<String>,
+        janela: Int = JANELA_EM_FALTA,
+    ): Pair<Int, List<Medicamento>>? =
+        medicamentos
+            .flatMap { m -> m.horas.map { h -> h to m } }
+            .filter { (h, m) -> h <= minutoAgora && minutoAgora - h <= janela && chaveToma(m.id, h) !in tomadas }
+            .groupBy({ it.first }, { it.second })
+            .minByOrNull { it.key }
+            ?.let { it.key to it.value }
+
+    /**
+     * Which day an alarm for [hora] belongs to, as an offset from today: 0, or -1 when it rang after midnight
+     * for last night's dose (alarms are inexact and only ever late, so "now earlier than the dose" means the
+     * day turned while it waited).
+     */
+    fun diaDoAlarme(minutoAgora: Int, hora: Int): Int = if (minutoAgora < hora) -1 else 0
+
+    // ---------------------------------------------------------------- contactos
+
+    /** What gets dialled: digits and a leading +, nothing else ("253 000 000" → "253000000"). */
+    fun numeroParaMarcar(numero: String): String {
+        val limpo = numero.trim().filter { it.isDigit() || it == '+' }
+        return if (limpo.startsWith('+')) "+" + limpo.drop(1).replace("+", "") else limpo.replace("+", "")
+    }
+
+    /** At least three digits: 112 is the shortest number anyone needs. */
+    fun numeroValido(numero: String): Boolean = numeroParaMarcar(numero).count { it.isDigit() } >= 3
 
     // ------------------------------------------------------- princípios ativos
 

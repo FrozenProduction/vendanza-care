@@ -169,7 +169,7 @@
         },
         {
           "titulo": "Como manter a lista",
-          "texto": "Escreva o nome do princípio ativo, a dose e as horas. Traga as caixas. Atualize a lista no mesmo dia em que o médico muda alguma coisa."
+          "texto": "Escreva o nome do princípio ativo, a dose e as horas. Traga as caixas. Atualize a lista no mesmo dia em que lhe mudam alguma coisa na medicação."
         },
         {
           "titulo": "Genéricos",
@@ -177,7 +177,7 @@
         },
         {
           "titulo": "Quando a lista muda",
-          "texto": "Depois de uma alta, quando o médico para um medicamento ou começa outro, corrija no mesmo dia. Uma lista desatualizada é pior do que não ter lista."
+          "texto": "Depois de uma alta, ou quando lhe param um medicamento ou começam outro, corrija no mesmo dia. Uma lista desatualizada é pior do que não ter lista."
         }
       ]
     },
@@ -259,7 +259,7 @@
         },
         {
           "titulo": "Medicamentos que aumentam o risco",
-          "texto": "Alguns medicamentos para a tensão, para dormir ou para a ansiedade dão tonturas. Peça ao médico ou ao farmacêutico para rever a lista."
+          "texto": "Alguns medicamentos para a tensão, para dormir ou para a ansiedade dão tonturas. Peça a um profissional de saúde, por exemplo o farmacêutico, para rever a lista."
         },
         {
           "titulo": "Peça ajuda",
@@ -347,7 +347,7 @@
         },
         {
           "titulo": "Dúvidas comuns",
-          "texto": "É normal ter dúvidas. Fale com o seu médico ou com o farmacêutico: eles explicam o que a vacina faz e quais os efeitos esperados."
+          "texto": "É normal ter dúvidas. Fale com um profissional de saúde: ele explica o que a vacina faz e quais os efeitos esperados."
         },
         {
           "titulo": "Antes de ir",
